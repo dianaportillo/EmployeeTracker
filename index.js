@@ -7,7 +7,7 @@ const connection = mysql.createConnection({
     port: 3306,
     user: "root",
     password: "password",
-    database: "employeedb"
+    database: "employee_db"
 });
 
 connection.connect(function (err) {
@@ -29,7 +29,7 @@ function askQuestions() {
         "Update employee roles",
         "QUIT"
       ],
-      name: "choice"
+      name: "choices"
     }).then(answers => {
         console.log(answers.choices);
         switch (answers.choices) {
@@ -76,26 +76,26 @@ function viewDepartments() {
 function addEmployee() {
     inquirer.prompt([{
         type: 'input',
-        name: 'firstName',
+        name: 'first_name',
         message: "Please add employees first name"
     },
     {
         type: 'input',
-        name: 'lastName',
+        name: 'last_name',
         message: "Please add employees last name"
     },
     {
         type: 'number',
-        name: 'employeeId',
+        name: 'employee_id',
         message: "Please provide an employee ID"
     },
     {
         type: 'number',
-        name: 'managerID',
+        name: 'manager_id',
         message: "Please provide employees manager ID"
     }
 ]).then(function(res) {
-    connection.query('INSERT INTO employee (first_name, last_name, employee_id, manager_id) VALUES (?, ?, ?, ?)', [res.firstName, res.lastName, res.employeeId, res.managerId], function(err, data) {
+    connection.query('INSERT INTO employee (first_name, last_name, employee_id, manager_id) VALUES (?, ?, ?, ?)', [res.first_name, res.last_name, res.employee_id, res.manager_id], function(err, data) {
         if (err) throw err;
         console.table("Successfully Saved!");
         askQuestions();
@@ -106,8 +106,8 @@ function addEmployee() {
 function addDepartment() {
     inquirer.prompt([{
         type: "input",
-        name: "department",
-        message: "Please provide department name you would like to add"
+        name: "name",
+        message: "Please provide department name you would like to add?"
     }, ]).then(function(res) {
         connection.query('INSERT INTO department (name) VALUES (?)', [res.department], function(err, data) {
             if (err) throw err;
